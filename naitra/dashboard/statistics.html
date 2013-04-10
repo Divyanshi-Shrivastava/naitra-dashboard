@@ -1,0 +1,220 @@
+<html>
+  <head>        
+    <title>My First chart using FusionCharts XT - JSON data URL</title>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://static.stackmob.com/js/stackmob-js-0.8.0-bundled-min.js"></script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCXZG_t7ZYAOL0SgxiB3HIH2Warac77Hjc&sensor=false"></script>
+<script type="text/javascript" src="scripts/FusionCharts.js"></script>
+	<script type="text/javascript" src="scripts/jquery.min.js"></script>
+        <script type="text/javascript" src="scripts/FusionCharts.HC.js"></script>
+ <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
+ <link rel="stylesheet" href= "http://code.jquery.com/ui/1.10.2/themes/dark-hive/jquery-ui.css" />
+<!-- <link rel="stylesheet" href= "http://code.jquery.com/ui/1.10.2/themes/redmond/jquery-ui.css" />-->
+  <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+  <script type="text/javascript" src="http://twitter.github.com/bootstrap/assets/js/bootstrap-modal.js"></script>
+ <script type="text/javascript" src="style/js/bootstrap.js"></script>
+ 
+<link type="text/css" rel="stylesheet" href="style/css/bootstrap.css"></link>
+		<script type="text/javascript">
+      /* <![CDATA[ */
+      // Initialize StackMob object
+      // Copy your init data from here: https://dashboard.stackmob.com/sdks/js/config
+      // Your other app information is here: https://dashboard.stackmob.com/settings
+      StackMob.init({
+        appName: 'my_first_app',
+        clientSubdomain: 'divyanshimixorgcom',
+        publicKey: '6dba825e-b26f-4626-b007-7b09d60ad718',
+		userSchema: 'organisation', //the schema you are using as a User Object
+		loginField: 'organisation_id', //the username you are using as the login field
+		passwordField: 'password', //the password field you are using as the password field
+	
+        apiVersion : 0
+		
+      });
+      /* ]]> */
+		</script>
+				<style>
+				 #footer {
+	 width: 100%;
+position: fixed;
+bottom: 0px;
+background-color: #000;
+height: auto;
+}
+.container .credit {
+float: right;
+margin: 10px 0;
+}
+.muted {
+color: #999999;
+}
+		.ui-dialog .ui-dialog-title {
+
+font-weight: bold;
+font-size: 18px;
+}
+.ui-dialog .ui-dialog-buttonpane {
+font-size: 14px;
+}
+		.content
+		{
+		display:none;
+		}
+		.ui-dialog-titlebar-close {
+  visibility: hidden;
+}
+.active
+{
+padding-top:0px;
+}
+.navbar .nav > li {
+
+padding-top:0px;
+}
+
+		</style>
+
+  </head>   
+  <body>    
+  
+<div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+          <a class="brand" href="">Naitra<img src="style/img/eye3.png"/>Dashboard</a>
+          <div class="nav-collapse collapse pull-right">
+            <ul class="nav">
+              <li class="" id="home">
+                <a href="index.html">HOME</a>
+              </li>
+              <li class="" id="my_dashboard">
+                <a href="dashboard.html">MY DASHBOARD </a>
+              </li>
+              <li class="" id="settings">
+                <a href="settings.html">SETTINGS</a>
+              </li>
+			  <li class="active">
+                <a href="statistics.html">SATISTICS</a>
+              </li>
+              <li class="" id="logout_btn">
+                <a id="logout" href="#LOGOUT">LOGOUT</a>
+
+              </li>
+            </ul>
+          </div>
+		  <div id="dialog-confirm"  title="Logout" style="font-size:14px;"><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>Do you really want to Logout??? </div> 
+        </div>
+      </div>
+	<header class="jumbotron subhead" style="height:45px;"></header>	
+
+<div class="modal" id="myModal" tabindex="-1"  aria-labelledby="myModalLabel" aria-hidden="true" style='z-index:1;width:50%; height:82%;margin: -250px;left:40%' >
+  <div class="modal-header">
+	
+            <h3 id="myModalLabel"> Total Number Of Scans</h3>
+    </div>
+    <div class="modal-body">
+      
+            
+      
+<div id="output_box" style='text-align:center;'></div>  
+    <div id="chartContainer" style=''>
+	<div id="myChartId">
+</div>
+</div>	
+</div>
+</div>
+<div id="footer">
+      <div class="container">
+        <p class="muted credit">Design and Developed by <a href="http://mixorg.com">MIXORG</a> </p>
+      </div>
+    </div>
+    <script type="text/javascript">  
+$(function(){
+var User = StackMob.Model.extend({ schemaName: 'organisation' });
+var username=localStorage.getItem("stackmob.oauth2.user");
+var user = new StackMob.User( { username: username } );
+    user.fetch({
+		success:function(modal){
+		var array = modal.toJSON();
+			$("#output_box").html("Scan Limit:"+array[0].scan_limit+"<br/>Total Scan:"+array[0].total_scan);
+			console.log(array[0]);
+		     var myChart = new FusionCharts( "charts/Doughnut2D.swf", 
+                   "myChartId", "100%", "80%", "0" );
+     myChart.setJSONData ( 
+        '{ "chart": { "caption" : "Scaning Data" , ' +
+        '"xAxisName" : "Total Scan", "yAxisName" : "Scan Limit", "numberPrefix" : "" }, ' +
+        '"data" : [ { "label" :"Number of Scans left:", "value" : "'+(array[0].scan_limit-array[0].total_scan)+'" },  ' +
+        '{ "label" : "Total Scans Till Now", "value" : "'+array[0].total_scan+'" } ]    } '
+);
+      myChart.render("chartContainer");
+ 
+		},
+		failue: function(){
+			alert("Unable to fetch content.");
+		}
+	
+  });
+ 
+     }); 
+    
+    </script>
+
+ 
+<script type="text/javascript">
+$(function(){
+//onload validation
+var username=localStorage.getItem("stackmob.oauth2.user");
+//alert(username);
+StackMob.isLoggedIn({
+  yes: function(username){
+    console.log(username + " is logged in.");
+  },
+  no: function(){
+   // console.log("No one is currently logged in.");
+   window.location="login.html";
+  }
+});
+  
+
+
+
+
+
+$("#logout").click(function(e){
+$( "#dialog-confirm" ).dialog( "open" );
+});
+
+$( "#dialog-confirm" ).dialog({
+ 
+	 autoOpen: false,
+      resizable: true,
+      height:160,
+      modal: true,
+      buttons: {
+        "YES": function() {
+		user.logout({
+  success: function(model) {
+    //show a success message/update your UI
+		window.location="login.html"
+  }, 
+  error: function(model, response) {
+    //show a failure message in your app    
+	alert("error");
+  }
+});
+          $( this ).dialog( "close" );
+        },
+        "NO": function() {
+          $( this ).dialog( "close" );
+		  
+        }
+      }
+    });
+
+
+ 
+
+});
+
+</script>	
+  </body> 
+</html>
