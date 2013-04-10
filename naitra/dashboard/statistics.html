@@ -131,7 +131,7 @@ padding-top:0px;
 $(function(){
 var User = StackMob.Model.extend({ schemaName: 'organisation' });
 var username=localStorage.getItem("stackmob.oauth2.user");
-var user = new StackMob.User( { username: username } );
+var user = new StackMob.User( { organisation_id: username } );
     user.fetch({
 		success:function(modal){
 		var array = modal.toJSON();
