@@ -452,9 +452,12 @@ padding-top:0px;
     </div>
  
 <script type="text/javascript">
-$(function(){
+$(document).ready(function() {
 //onload validation
+var User = StackMob.Model.extend({ schemaName: 'organisation' });
 var username=localStorage.getItem("stackmob.oauth2.user");
+var user = new StackMob.User({ organisation_id: username }); 
+
 //alert(username);
 StackMob.isLoggedIn({
   yes: function(username){
@@ -465,13 +468,7 @@ StackMob.isLoggedIn({
    window.location="login.html";
   }
 });
-  
-
-
-
-
-
-$("#logout").click(function(e){
+  $("#logout").click(function(e){
 $( "#dialog-confirm" ).dialog( "open" );
 });
 
@@ -501,12 +498,8 @@ $( "#dialog-confirm" ).dialog({
         }
       }
     });
-
-
- 
-
 });
 
-</script>
+</script>	
 	</body>
 </html>
