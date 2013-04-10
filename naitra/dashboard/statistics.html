@@ -160,11 +160,14 @@ var user = new StackMob.User( { username: username } );
 
  
 <script type="text/javascript">
-$(function(){
+$(document).ready(function() {
 //onload validation
+var User = StackMob.Model.extend({ schemaName: 'organisation' });
 var username=localStorage.getItem("stackmob.oauth2.user");
+var user = new StackMob.User({ organisation_id: username }); 
+
 //alert(username);
-user.isLoggedIn({
+StackMob.isLoggedIn({
   yes: function(username){
     console.log(username + " is logged in.");
   },
@@ -173,13 +176,7 @@ user.isLoggedIn({
    window.location="login.html";
   }
 });
-  
-
-
-
-
-
-$("#logout").click(function(e){
+  $("#logout").click(function(e){
 $( "#dialog-confirm" ).dialog( "open" );
 });
 
@@ -205,14 +202,10 @@ $( "#dialog-confirm" ).dialog({
         },
         "NO": function() {
           $( this ).dialog( "close" );
-		  
+		
         }
       }
     });
-
-
- 
-
 });
 
 </script>	
