@@ -179,8 +179,7 @@ user.isLoggedIn({
 $("#logout").click(function(e){
 $( "#dialog-confirm" ).dialog( "open" );
 });
-var User = StackMob.Model.extend({ schemaName: 'organisation' });		
-	var user = new StackMob.User({ organisation_id: localStorage.getItem("stackmob.oauth2.user") });
+
 $( "#dialog-confirm" ).dialog({
  
 	 autoOpen: false,
