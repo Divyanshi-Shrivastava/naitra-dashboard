@@ -6,6 +6,15 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 <script type="text/javascript" src="http://static.stackmob.com/js/stackmob-js-0.8.0-bundled-min.js"></script>
 
+
+ <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
+ <link rel="stylesheet" href= "http://code.jquery.com/ui/1.10.2/themes/dark-hive/jquery-ui.css" />
+<!-- <link rel="stylesheet" href= "http://code.jquery.com/ui/1.10.2/themes/redmond/jquery-ui.css" />-->
+  <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+  <script type="text/javascript" src="http://twitter.github.com/bootstrap/assets/js/bootstrap-modal.js"></script>
+ <script type="text/javascript" src="style/js/bootstrap.js"></script>
+ 
+<link type="text/css" rel="stylesheet" href="style/css/bootstrap.css"></link>
 <script type="text/javascript">
       /* <![CDATA[ */
       // Initialize StackMob object
@@ -16,36 +25,18 @@
         clientSubdomain: 'divyanshimixorgcom',
         publicKey: '6dba825e-b26f-4626-b007-7b09d60ad718',
         apiVersion : 0,
-		userSchema: 'organization',
-	    loginField: 'organization_id',
+		userSchema: 'organisation',
+	    loginField: 'organisation_id',
 	    passwordField: 'password',
       });
       /* ]]> */
 </script> 
 
-<script type="text/javascript">
-$(document).ready(function() {
-	var User = StackMob.Model.extend({ schemaName: 'organization' });		
-	var user = new StackMob.User({ organization_id: localStorage.getItem("stackmob.oauth2.user") });
-	user.isLoggedIn({
-	  yes: function(){
-		//console.log("Logged in.");
-		//alert("logged in");
-	  },
-	  no: function(){
-		//console.log("Not logged in.");
-		window.location = "login.html";
-		//alert("not logged in");
-	  }
-	});
-	 
- }); 
- </script>
 	
 <script type="text/javascript">
       /* <![CDATA[ */
      $(document).ready(function() {
-	  		result();
+			result();
 			function result() {
 						
 	  		var Device_schema = StackMob.Model.extend({ schemaName: 'imagesearch' });
@@ -71,20 +62,24 @@ $(document).ready(function() {
 								 //alert(count);
 							for(var i=0; i<=count; i++)
 							{
-								if(array[i].org_img == localStorage.getItem("stackmob.oauth2.user"))
+							//	if(array[i].org_img == localStorage.getItem("stackmob.oauth2.user"))
+							if(array[i].org_img == localStorage.getItem("stackmob.oauth2.user"))
 								{
+								//alert(array[i].org_img);
 									//$('#last_mod_date').html(array[0].lastmoddate);
 									var val = array[i].latitude+","+array[i].longitude;
 									$('#latlng').attr('value', val);
 									//alert(val);
-									$(".device_id").append(array[i].dev_img +"<br/>");												 
+									$("#ui").append("<tr><td>"+array[i].dev_img+"</td><td>"+array[i].imageid+"</td><td>"+array[i].feedback+"</td><td>"+array[i].mobile_no+"</td><td>"+array[i].model+"</td><td>"+array[i].latitude +","+ array[i].longitude+"</td><td>"+ new Date(array[i].lastmoddate)+"</td><tr>");
+								/*	$(".device_id").append(array[i].dev_img +"<br/>");												 
 									$(".image_id").append(array[i].imageid +"<br/>");
 									//$(".location").append(array[i].latitude +","+ array[i].longitude +"<br/>");
 									$(".feedback").append(array[i].feedback +"<br/>");
 									$(".mobile_no").append(array[i].mobile_no +"<br/>");
-									$(".lastmoddate").append(array[i].lastmoddate +"<br/>");
+									var time=new Date(array[i].lastmoddate);
+									$(".lastmoddate").append(time +"<br/>");
 									$(".location").append(val +"<br/>");
-									$(".model").append(array[i].model +"<br/>");
+									$(".model").append(array[i].model +"<br/>");	*/								
 								} //end if condition
 							} // end for loop
 						} //end success
@@ -107,23 +102,24 @@ $(document).ready(function() {
 							 
 							 var lastmod_date = array[0].lastmoddate;
 							 var lastmod_date_old = document.getElementById("last_mod_date").getAttribute("value");
-							 //alert(lastmod_date_old +"..."+ lastmod_date);
+							// alert(lastmod_date_old +"..."+ lastmod_date);
 							 if(lastmod_date_old < lastmod_date)
 							{
-								alert("data updated");
-								$(".device_id").html("");
+								//alert("data updated");
+							/*	$(".device_id").html("");
 							 	 $(".image_id").html("");
 								 $(".feedback").html("");
 								 $(".mobile_no").html("");
 								$(".location").html("");
 								$(".lastmoddate").html(""); 
 								$(".model").html(""); 
-								
+								*/
 								var val = array[0].lastmoddate;
 								 $('#last_mod_date').attr('value', val);
 								
 								var key;
 								var count = 0;
+								var counter=0;
 								for(key in array) {
 									 if(array.hasOwnProperty(key)) {
 									  count ++;
@@ -134,30 +130,145 @@ $(document).ready(function() {
 							{
 								if(array[i].org_img == localStorage.getItem("stackmob.oauth2.user"))
 								{
+								if(counter<50)
+								{
 									var val = array[i].latitude+","+array[i].longitude;
 									$('#latlng').attr('value', val);
-									
-									$(".device_id").append(array[i].dev_img +"<br/>");									 
+									$("#ui").append("<tr><td>"+array[i].dev_img+"</td><td>"+array[i].imageid+"</td><td>"+array[i].feedback+"</td><td>"+array[i].mobile_no+"</td><td>"+new Date(array[i].lastmoddate)+"</td><tr>");
+							/*		$(".device_id").append(array[i].dev_img +"<br/>");									 
 									$(".image_id").append(array[i].imageid +"<br/>");
 									//$(".location").append(array[i].latitude +","+ array[i].longitude +"<br/>");
 									$(".feedback").append(array[i].feedback +"<br/>");
+									
 									$(".mobile_no").append(array[i].mobile_no +"<br/>");
-									$(".lastmoddate").append(array[i].lastmoddate +"<br/>");
+									$(".lastmoddate").append(new Date(array[i].lastmoddate) +"<br/>");
 									$(".location").append(val +"<br/>");
 									$(".model").append(array[i].model +"<br/>");
+									//show_marker();
+									
+									// ------------------------------------------device schema query
+									/*var Device_schema2 = StackMob.Model.extend({ schemaName: 'device' });
+									var device2 = new Device_schema2({ deviceid : array[i].dev_img });
+									device2.fetch({
+										success:function(modal) {
+											array2 = modal.toJSON();
+											$(".model").append(array2[0].model +"<br/>");
+										}
+									}); */
+									//------------------------------------------- end device schema code
+									counter++;
 								}
+								}
+								else
+								exit();
 							}
 						}
 						}
 				 	 });
-					 } // end check_newentry function 
-				});
+					 } // end check_newentry 
+					 });
 					 
 		</script>
+				<style>
+				 #footer {
+	 width: 100%;
+position: fixed;
+bottom: 0px;
+background-color: #000;
+height: auto;
+}
+.container .credit {
+float: right;
+margin: 10px 0;
+}
+.muted {
+color: #999999;
+}
+		.ui-dialog .ui-dialog-title {
+
+font-weight: bold;
+font-size: 18px;
+}
+.ui-dialog .ui-dialog-buttonpane {
+font-size: 14px;
+}
+		.content
+		{
+		display:none;
+		}
+		.ui-dialog-titlebar-close {
+  visibility: hidden;
+}
+.active
+{
+padding-top:0px;
+}
+.navbar .nav > li {
+
+padding-top:0px;
+}
+.dashboard
+{
+
+margin-left: 5%;
+position: absolute;
+width: 90%;
+height: 90%;
+
+background-color: #ffffff;
+border: 1px solid #999;
+border: 1px solid rgba(0, 0, 0, 0.3);
+-webkit-border-radius: 6px;
+-moz-border-radius: 6px;
+border-radius: 6px;
+-webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+-moz-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+-webkit-background-clip: padding-box;
+-moz-background-clip: padding-box;
+background-clip: padding-box;
+}
+
+		</style>
+
 </head>
 
 <body>
-<table border="2">
+
+<div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+          <a class="brand" href="">Naitra<img src="style/img/eye3.png"/>Dashboard</a>
+          <div class="nav-collapse collapse pull-right">
+            <ul class="nav">
+              <li class="" id="home">
+                <a href="index.html">HOME</a>
+              </li>
+              <li class="active" id="my_dashboard">
+                <a href="dashboard.html">MY DASHBOARD </a>
+              </li>
+              <li class="" id="settings">
+                <a href="settings.html">SETTINGS</a>
+              </li>
+			  <li class="" id="stats">
+                <a href="statistics.html">SATISTICS</a>
+              </li>
+              <li class="" id="logout_btn">
+                <a id="logout" href="#LOGOUT">LOGOUT</a>
+
+              </li>
+            </ul>
+          </div>
+		  <div id="dialog-confirm"  title="Logout" style="font-size:14px;"><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>Do you really want to Logout??? </div> 
+        </div>
+      </div>
+	<header class="jumbotron subhead" style="height:45px;"></header>
+<div class="dashboard"  style='' >
+  <div class="modal-header">
+	
+            <h3 id="myModalLabel"> Users Information</h3>
+    </div>
+    <div class="modal-body" style=''>
+<table  class="data  table-bordered table table-striped" id="ui">
 	<tr>
 		<th>Device-id</th>
 		<th>Image-id</th>
@@ -167,17 +278,78 @@ $(document).ready(function() {
 		<th>Location</th>
 		<th>Time</th>
 	</tr>
-	<tr>
-		<td class="device_id"></td>
-		<td class="image_id"></td>
-		<td class="feedback"></td>
-		<td class="mobile_no"></td>
-		<td class="model"></td>
-		<td class="location"></td>
-		<td class="lastmoddate"></td>
-	</tr>
-</table>
-<div id="last_mod_date" value=""></div>
-<div id="latlng" value=""></div> 
+	</table>
+</div>
+<div class="modal-footer">
+	</div>
+</div>
+<div id="footer">
+      <div class="container">
+        <p class="muted credit">Design and Developed by <a href="http://mixorg.com">MIXORG</a> </p>
+      </div>
+    </div>
+<!--<div id="last_mod_date" value=""></div>
+<div id="latlng" value=""></div> -->
+
+ 
+<script type="text/javascript">
+$(function(){
+//onload validation
+var username=localStorage.getItem("stackmob.oauth2.user");
+//alert(username);
+StackMob.isLoggedIn({
+  yes: function(username){
+    console.log(username + " is logged in.");
+  },
+  no: function(){
+   // console.log("No one is currently logged in.");
+   window.location="login.html";
+  }
+});
+  
+
+
+
+
+
+$("#logout").click(function(e){
+$( "#dialog-confirm" ).dialog( "open" );
+});
+
+var User = StackMob.Model.extend({ schemaName: 'organisation' });		
+var user = new StackMob.User({ organisation_id: localStorage.getItem("stackmob.oauth2.user") });
+$( "#dialog-confirm" ).dialog({
+ 
+	 autoOpen: false,
+      resizable: true,
+      height:160,
+      modal: true,
+      buttons: {
+        "YES": function() {
+		user.logout({
+  success: function(model) {
+    //show a success message/update your UI
+		window.location="login.html"
+  }, 
+  error: function(model, response) {
+    //show a failure message in your app    
+	alert("error");
+  }
+});
+          $( this ).dialog( "close" );
+        },
+        "NO": function() {
+          $( this ).dialog( "close" );
+		
+        }
+      }
+    });
+
+
+ 
+
+});
+
+</script>
 </body>
 </html>
