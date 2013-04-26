@@ -13,7 +13,7 @@ if(isset($_POST['submit']))
 </head>
 
 <body>
-<form method="post" action="/naitra/dashboard/php_demo.php">
+<form method="post" action="naitra/dashboard/php_demo.php">
 	Enter name :<input type="text" name="name" />
 	<input type="submit" name="submit" value="submit" />
 </form>
