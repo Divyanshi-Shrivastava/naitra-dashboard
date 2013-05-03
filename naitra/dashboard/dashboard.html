@@ -70,16 +70,8 @@
 									var val = array[i].latitude+","+array[i].longitude;
 									$('#latlng').attr('value', val);
 									//alert(val);
-									$("#ui").append("<tr><td>"+array[i].dev_img+"</td><td>"+array[i].imageid+"</td><td>"+array[i].feedback+"</td><td>"+array[i].mobile_no+"</td><td>"+array[i].model+"</td><td>"+array[i].latitude +","+ array[i].longitude+"</td><td>"+ new Date(array[i].lastmoddate)+"</td><tr>");
-								/*	$(".device_id").append(array[i].dev_img +"<br/>");												 
-									$(".image_id").append(array[i].imageid +"<br/>");
-									//$(".location").append(array[i].latitude +","+ array[i].longitude +"<br/>");
-									$(".feedback").append(array[i].feedback +"<br/>");
-									$(".mobile_no").append(array[i].mobile_no +"<br/>");
-									var time=new Date(array[i].lastmoddate);
-									$(".lastmoddate").append(time +"<br/>");
-									$(".location").append(val +"<br/>");
-									$(".model").append(array[i].model +"<br/>");	*/								
+									$("#ui").append("<tr><td>"+array[i].dev_img+"</td><td>"+array[i].imageid+"</td><td>"+array[i].feedback+"</td><td>"+array[i].mobile_no+"</td><td>"+array[i].model+"</td><td>"+array[i].latitude +","+ array[i].longitude+"</td><td>"+ new Date(array[i].lastmoddate)+"</td></tr>");
+
 								} //end if condition
 							} // end for loop
 						} //end success
@@ -106,14 +98,7 @@
 							 if(lastmod_date_old < lastmod_date)
 							{
 								//alert("data updated");
-							/*	$(".device_id").html("");
-							 	 $(".image_id").html("");
-								 $(".feedback").html("");
-								 $(".mobile_no").html("");
-								$(".location").html("");
-								$(".lastmoddate").html(""); 
-								$(".model").html(""); 
-								*/
+							
 								var val = array[0].lastmoddate;
 								 $('#last_mod_date').attr('value', val);
 								
@@ -135,27 +120,6 @@
 									var val = array[i].latitude+","+array[i].longitude;
 									$('#latlng').attr('value', val);
 									$("#ui").append("<tr><td>"+array[i].dev_img+"</td><td>"+array[i].imageid+"</td><td>"+array[i].feedback+"</td><td>"+array[i].mobile_no+"</td><td>"+new Date(array[i].lastmoddate)+"</td><tr>");
-							/*		$(".device_id").append(array[i].dev_img +"<br/>");									 
-									$(".image_id").append(array[i].imageid +"<br/>");
-									//$(".location").append(array[i].latitude +","+ array[i].longitude +"<br/>");
-									$(".feedback").append(array[i].feedback +"<br/>");
-									
-									$(".mobile_no").append(array[i].mobile_no +"<br/>");
-									$(".lastmoddate").append(new Date(array[i].lastmoddate) +"<br/>");
-									$(".location").append(val +"<br/>");
-									$(".model").append(array[i].model +"<br/>");
-									//show_marker();
-									
-									// ------------------------------------------device schema query
-									/*var Device_schema2 = StackMob.Model.extend({ schemaName: 'device' });
-									var device2 = new Device_schema2({ deviceid : array[i].dev_img });
-									device2.fetch({
-										success:function(modal) {
-											array2 = modal.toJSON();
-											$(".model").append(array2[0].model +"<br/>");
-										}
-									}); */
-									//------------------------------------------- end device schema code
 									counter++;
 								}
 								}
