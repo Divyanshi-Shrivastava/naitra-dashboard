@@ -34,9 +34,80 @@
       });
       /* ]]> */
 		</script>
-				<style>
-				 #footer {
-	 width: 100%;
+	
+<script type="text/javascript">
+$(document).ready(function() {
+//onload validation
+var username=localStorage.getItem("stackmob.oauth2.user"); 
+
+//alert(username);
+var User = StackMob.Model.extend({ schemaName: 'organisation' });		
+	//var user = new StackMob.User({ organisation_id: localStorage.getItem("stackmob.oauth2.user") });
+	var user = new StackMob.User({ organisation_id: username });
+user.isLoggedIn({
+  yes: function(username){
+    console.log(username + " is logged in.");
+  },
+  no: function(){
+   // console.log("No one is currently logged in.");
+   window.location="login.html";
+  } 
+});
+  $("#logout").click(function(e){
+$( "#dialog-confirm" ).dialog( "open" );
+});
+
+$( "#dialog-confirm" ).dialog({
+ 
+	 autoOpen: false,
+      resizable: true,
+      height:160,
+      modal: true,
+      buttons: {
+        "YES": function() {
+		user.logout({
+  success: function(model) {
+    //show a success message/update your UI
+		window.location="login.html"
+  }, 
+  error: function(model, response) {
+    //show a failure message in your app    
+	alert("error");
+  }
+});
+          $( this ).dialog( "close" );
+        },
+        "NO": function() {
+          $( this ).dialog( "close" );
+		
+        }
+      }
+    });
+});
+
+	// check organisation super admin
+	var User = StackMob.Model.extend({ schemaName: 'organisation' });
+	var user = new StackMob.User({ });
+	var q = new StackMob.Collection.Query();
+	q.equals('organisation_id', localStorage.getItem("stackmob.oauth2.user"));
+	user.query(q, {
+		success:function(modal) {
+			array = modal.toJSON();
+			console.debug(array);
+			var super_admin = array[0].super_admin;
+			//alert(super_admin);
+			if(super_admin == "true") {
+				$('#admin_settings').show();
+			}
+		} 
+	}); 
+	// end check organisation super admin
+
+</script>		
+		
+<style>
+#footer {
+width: 100%;
 position: fixed;
 bottom: 0px;
 background-color: #000;
@@ -89,12 +160,15 @@ padding-top:0px;
               <li class="" id="my_dashboard">
                 <a href="dashboard.html">MY DASHBOARD </a>
               </li>
-              <li class="" id="settings">
-                <a href="settings.html">SETTINGS</a>
-              </li>
 			  <li class="active">
                 <a href="statistics.html">SATISTICS</a>
               </li>
+              <li class="" id="settings">
+                <a href="other_organisation_settings.html">SETTINGS</a>
+              </li>
+			   <li class="" id="admin_settings" style="display:none;">
+			  	<a href="other_admin_settings.html">ADMIN SETTINGS</a>
+			  </li>
               <li class="" id="logout_btn">
                 <a id="logout" href="#LOGOUT">LOGOUT</a>
 
@@ -157,58 +231,6 @@ var user = new StackMob.User( { organisation_id: username } );
      }); 
     
     </script>
-
- 
-<script type="text/javascript">
-$(document).ready(function() {
-//onload validation
-var username=localStorage.getItem("stackmob.oauth2.user"); 
-
-//alert(username);
-var User = StackMob.Model.extend({ schemaName: 'organisation' });		
-	//var user = new StackMob.User({ organisation_id: localStorage.getItem("stackmob.oauth2.user") });
-	var user = new StackMob.User({ organisation_id: username });
-user.isLoggedIn({
-  yes: function(username){
-    console.log(username + " is logged in.");
-  },
-  no: function(){
-   // console.log("No one is currently logged in.");
-   window.location="login.html";
-  } 
-});
-  $("#logout").click(function(e){
-$( "#dialog-confirm" ).dialog( "open" );
-});
-
-$( "#dialog-confirm" ).dialog({
- 
-	 autoOpen: false,
-      resizable: true,
-      height:160,
-      modal: true,
-      buttons: {
-        "YES": function() {
-		user.logout({
-  success: function(model) {
-    //show a success message/update your UI
-		window.location="login.html"
-  }, 
-  error: function(model, response) {
-    //show a failure message in your app    
-	alert("error");
-  }
-});
-          $( this ).dialog( "close" );
-        },
-        "NO": function() {
-          $( this ).dialog( "close" );
-		
-        }
-      }
-    });
-});
-
-</script>	
+ 	
   </body> 
 </html>
