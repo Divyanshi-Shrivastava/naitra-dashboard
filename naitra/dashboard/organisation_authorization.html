@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Dashboard - Authorize Device</title>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://static.stackmob.com/js/stackmob-js-0.8.0-bundled-min.js"></script>
+
+ <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
+ <link rel="stylesheet" href= "http://code.jquery.com/ui/1.10.2/themes/dark-hive/jquery-ui.css" />
+<!-- <link rel="stylesheet" href= "http://code.jquery.com/ui/1.10.2/themes/redmond/jquery-ui.css" />-->
+  <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+  <script type="text/javascript" src="http://twitter.github.com/bootstrap/assets/js/bootstrap-modal.js"></script>
+ <script type="text/javascript" src="style/js/bootstrap.js"></script>
+ 
+<link type="text/css" rel="stylesheet" href="style/css/bootstrap.css"></link>
+
+<script type="text/javascript">
+      /* <![CDATA[ */
+      // Initialize StackMob object
+      // Copy your init data from here: https://dashboard.stackmob.com/sdks/js/config
+      // Your other app information is here: https://dashboard.stackmob.com/settings
+      StackMob.init({
+        appName: 'my_first_app',
+        clientSubdomain: 'divyanshimixorgcom',
+        publicKey: '6dba825e-b26f-4626-b007-7b09d60ad718',
+        apiVersion : 0,
+  	userSchema: 'organisation',
+	    loginField: 'organisation_id',
+	    passwordField: 'password',
+      });
+      /* ]]> */
+</script> 
+
+<script type="text/javascript">
+	$(function(){
+		//onload validation
+		var username=localStorage.getItem("stackmob.oauth2.user");
+		//alert(username);
+		StackMob.isLoggedIn({
+			yes: function(username){
+				console.log(username + " is logged in.");
+			 },
+			no: function(){
+			   // console.log("No one is currently logged in.");
+			   window.location="login.html";
+			 }
+		});
+	  
+		$("#logout").click(function(e){
+			$( "#dialog-confirm" ).dialog( "open" );
+		});
+	
+	var User = StackMob.Model.extend({ schemaName: 'organisation' });		
+	var user = new StackMob.User({ organisation_id: localStorage.getItem("stackmob.oauth2.user") });
+	$( "#dialog-confirm" ).dialog({
+	 
+		  autoOpen: false,
+		  resizable: true,
+		  height:160,
+		  modal: true,
+		  buttons: {
+			"YES": function() {
+				user.logout({
+					  success: function(model) {
+						//show a success message/update your UI
+							window.location="login.html"
+					  }, 
+					  error: function(model, response) {
+						//show a failure message in your app    
+						alert("error");
+					  }
+				});
+			  	$( this ).dialog( "close" );
+			},
+			"NO": function() {
+			  $( this ).dialog( "close" );
+			}
+		  }
+		});
+	});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+
+				// check organisation super admin
+						 var User = StackMob.Model.extend({ schemaName: 'organisation' });
+						var user = new StackMob.User({ });
+						var q = new StackMob.Collection.Query();
+						q.equals('organisation_id', localStorage.getItem("stackmob.oauth2.user"));
+						user.query(q, {
+								success:function(modal) {
+									array = modal.toJSON();
+									console.debug(array);
+									var super_admin = array[0].super_admin;
+									//alert(super_admin);
+									if(super_admin == "true") {
+										$('#admin_settings').show();
+									}
+								} 
+							}); 
+					// end check organisation super admin
+
+	var User = StackMob.Model.extend({ schemaName: 'organisation' });		
+	var user = new StackMob.User({ organisation_id: localStorage.getItem("stackmob.oauth2.user") });
+	user.isLoggedIn({
+	  yes: function(){
+		//console.log("Logged in.");
+		//alert("logged in");
+	  },
+	  no: function(){
+		//console.log("Not logged in.");
+		window.location = "login.html";
+		//alert("not logged in");
+	  }
+	});
+	 
+ }); 
+ </script>
+	
+<script type="text/javascript">
+      /* <![CDATA[ */
+     $(document).ready(function() {
+			result();
+			
+			function result() {				
+				// fetch all organisation_id from organisation schema
+				var Organisation = StackMob.Model.extend({ schemaName: 'organisation' });
+				var organisation = new Organisation({ });
+				organisation.fetch({
+						success: function(modal) {
+						   	var array = modal.toJSON();
+
+								var key;
+								var count = 0;
+								for(key in array) {  //count no. of elements in image_search schema
+									 if(array.hasOwnProperty(key)) {
+										count ++;
+									 }
+								 }
+								 //alert(count);
+								 
+							for(var i=0; i<=count; i++)
+							{
+										if (array[i].organisation_status == 'disable') {  //check if the organisation status is disable
+										$("#ui").append("<tr><td>"+array[i].organisation_id+"</td><td>"+array[i].organisation_shortcode+"</td><td>"+array[i].device_list+"</td><td>"+array[i].device_validation+"</td><td>"+array[i].scan_limit+"</td><td>"+array[i].scan_validation +"</td><td>"+array[i].super_admin +"</td><td>"+array[i].total_scan +"</td><td>"+ new Date(array[i].lastmoddate).toUTCString()+"</td><td ><input type='button' class='organisation_status' id='"+array[i].organisation_id+"' organisation_id='"+array[i].organisation_id+"' value='Enable' style='background-color:red; color:#ffffff; cursor:pointer;' /></td></tr>");
+										}
+										if (array[i].organisation_status == 'enable') { //check if the organisation status is enable
+										$("#ui").append("<tr><td>"+array[i].organisation_id+"</td><td>"+array[i].organisation_shortcode+"</td><td>"+array[i].device_list+"</td><td>"+array[i].device_validation+"</td><td>"+array[i].scan_limit+"</td><td>"+array[i].scan_validation +"</td><td>"+array[i].super_admin +"</td><td>"+array[i].total_scan +"</td><td>"+ new Date(array[i].lastmoddate).toUTCString()+"</td><td ><input type='button' class='organisation_status' id='"+array[i].organisation_id+"' organisation_id='"+array[i].organisation_id+"' value='Disable' style='background-color:green; color:#ffffff; cursor:pointer;' /></td></tr>");
+										}
+										
+										$(".organisation_status").click(function() // on click of diable and enable button
+										{ 
+											var organisation_id = $(this).attr('organisation_id');
+											//alert($(this).attr('value'));
+											// fetch organisation status from organisation schema
+											var User = StackMob.Model.extend({ schemaName: 'organisation' });
+											var user = new StackMob.User({ });
+											var q = new StackMob.Collection.Query();
+											q.equals('organisation_id', organisation_id);
+											user.query(q, {
+												success:function(modal) {
+													array = modal.toJSON();
+													console.debug(array);
+													var organisation_status = array[0].organisation_status;
+													
+													//$('#organisation_status').attr('value', organisation_status); // set the organisation_status value in textbox
+											
+													//fetch organisation_status value from textbox
+													//var organisation_status = document.getElementById("organisation_status").getAttribute("value");
+													//alert(organisation_status);
+											
+													//on click disable button
+													if(organisation_status == "enable") // check if orgnisation is enable
+													{
+														var User = StackMob.Model.extend({ schemaName: 'organisation' });
+														var user = new StackMob.User({ organisation_id: organisation_id });
+														user.save({ organisation_status: "disable"}, {
+															success: function(model) {
+																console.log(model.toJSON());
+																alert("organisation is successfully disabled");
+																//result();
+															},
+															error: function(model, response) {
+																console.debug(response);
+																alert("error");
+															}
+														});
+														//var organisation_id = "#"+organisation_id;
+														$("#"+organisation_id.toString()).attr('value', 'Enable'); // change button value from enable to disable
+														$("#"+organisation_id.toString()).css("background-color","red");
+														//result();
+													} // end enable if condition
+													
+													//on click enable button
+													if(organisation_status == "disable") // check if orgnisation is disable
+													{
+														var User = StackMob.Model.extend({ schemaName: 'organisation' });
+														var user = new StackMob.User({ organisation_id: organisation_id });
+														user.save({ organisation_status: "enable"}, {
+															success: function(model) {
+																console.log(model.toJSON());
+																alert("organisation is successfully enabled");
+																//result();
+															},
+															error: function(model, response) {
+																console.debug(response);
+																alert("error");
+															}
+														});
+														$("#"+organisation_id.toString()).attr('value', 'Disable'); // change button value from enable to disable
+														$("#"+organisation_id.toString()).css("background-color","green");
+														//result();
+													} // end disable if condition
+											
+										} // end success
+									}); // end equals query	
+									exit();	
+								});  //end click enable and disable button function
+								// end fetch organisation status
+							} // end for loop
+						} //end success
+				 	 }); // end fetch all organisation_id from organisation schema
+				} // end result function
+	});			 
+</script>
+		
+<style>
+	#footer {
+	width: 100%;
+	position: fixed;
+	bottom: 0px;
+	background-color: #000;
+	height: auto;
+	}
+	
+	.container .credit {
+	float: right;
+	margin: 10px 0;
+	}
+	
+	.muted {
+	color: #999999;
+	}
+
+	.ui-dialog .ui-dialog-title {
+	font-weight: bold;
+	font-size: 18px;
+	}
+	
+	.ui-dialog .ui-dialog-buttonpane {
+	font-size: 14px;
+	}
+		
+	.content
+	{
+	display:none;
+	}
+	
+	.ui-dialog-titlebar-close {
+ 	 visibility: hidden;
+	}
+	 
+	.active
+	{
+	padding-top:0px;
+	}
+	
+	.navbar .nav > li {
+	padding-top:0px;
+	}
+	
+	.dashboard
+	{
+	margin-left: 5%;
+	position: absolute;
+	width: 90%;
+	height: 90%;
+	
+	background-color: #ffffff;
+	border: 1px solid #999;
+	border: 1px solid rgba(0, 0, 0, 0.3);
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
+	-webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+	-moz-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+	box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+	-webkit-background-clip: padding-box;
+	-moz-background-clip: padding-box;
+	background-clip: padding-box;
+	}
+</style>
+</head>
+
+<body>
+<!-- header -->
+<div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+          <a class="brand" href="">Naitra<img src="style/img/eye3.png"/>Dashboard</a>
+          <div class="nav-collapse collapse pull-right">
+            <ul class="nav">
+              <li class="" id="home">
+                <a href="index.html">HOME</a>
+              </li>
+              <li class="active" id="my_dashboard">
+                <a href="dashboard.html">MY DASHBOARD </a>
+              </li>
+			  <li class="" id="stats">
+                <a href="statistics.html">SATISTICS</a>
+              </li>
+              <li class="" id="settings">
+                <a href="other_organisation_settings.html">SETTINGS</a>
+              </li>
+			  <li class="" id="admin_settings" style="display:none;">
+			  	<a href="other_admin_settings.html">ADMIN SETTINGS</a>
+			  </li>
+              <li class="" id="logout_btn">
+                <a id="logout" href="#LOGOUT">LOGOUT</a>
+              </li>
+            </ul>
+          </div>
+		  <div id="dialog-confirm"  title="Logout" style="font-size:14px;"><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>Do you really want to Logout??? </div> 
+        </div>
+  </div>
+<!-- end header -->
+<header class="jumbotron subhead" style="height:45px;"></header>
+
+<div class="dashboard">
+  	<div class="modal-header">
+		 <h3 id="myModalLabel"> Users Information</h3>
+ 	</div>
+ 	<div class="modal-body">
+		<table  class="data  table-bordered table table-striped" id="ui" border="2">
+			<tr>
+				<th>Organization-id</th>
+				<th>Organisation Shortcode</th>
+				<th>Device List</th>
+				<th>Device Validation</th>
+				<th>Scan Limit</th>
+				<th>Scan Validation</th>
+				<th>Super Admin</th>
+				<th>Total Scan</th>
+				<th>Time</th>
+				<th>Organisation Status</th>
+			</tr>
+		</table>
+	</div>
+	<div class="modal-footer"></div>
+	<input type="hidden" name="organisation_status" id="organisation_status" value="" style="width:500px; border:none;" readonly="readonly" />
+</div>
+
+<div id="footer">
+    <div class="container">
+       <p class="muted credit">Design and Developed by <a href="http://mixorg.com">MIXORG</a> </p>
+    </div>
+</div>
+	
+</body>
+</html>
