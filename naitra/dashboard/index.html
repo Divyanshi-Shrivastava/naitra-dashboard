@@ -1,6 +1,6 @@
 <html>
 	<head>
-    <title>Naitra Dashboard</title>
+    <title>Your First API Call</title>
     <link href="http://www.stackmob.com/platform/favicon.ico" type="image/vnd.microsoft.icon" rel="icon" />
     <link href="http://www.stackmob.com/platform/favicon.png" type="image/png" rel="icon" />
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
@@ -60,11 +60,84 @@
 		StackMob JS SDK code that creates and saves a TestObject
 		*************************************
 		-->
+		
+		<script type="text/javascript">
+$(function(){
+//onload validation
+var username=localStorage.getItem("stackmob.oauth2.user");
+//alert(username);
+StackMob.isLoggedIn({
+  yes: function(username){
+    console.log(username + " is logged in.");
+  },
+  no: function(){
+   // console.log("No one is currently logged in.");
+   window.location="login.html";
+  }
+});
+
+
+$("#logout").click(function(e){
+$( "#dialog-confirm" ).dialog( "open" );
+});
+
+var User = StackMob.Model.extend({ schemaName: 'organisation' });		
+var user = new StackMob.User({ organisation_id: localStorage.getItem("stackmob.oauth2.user") });
+$( "#dialog-confirm" ).dialog({
+ 
+	 autoOpen: false,
+      resizable: true,
+      height:160,
+      modal: true,
+      buttons: {
+        "YES": function() {
+		user.logout({
+  success: function(model) {
+    //show a success message/update your UI
+		window.location="login.html"
+  }, 
+  error: function(model, response) {
+    //show a failure message in your app    
+	alert("error");
+  }
+});
+          $( this ).dialog( "close" );
+        },
+        "NO": function() {
+          $( this ).dialog( "close" );
+		
+        }
+      }
+    });
+
+});
+
+</script>
+		
 		<script type="text/javascript">
       /* <![CDATA[ */
       $(document).ready(function() {
-	  		// organisation app icon image
-			var User = StackMob.Model.extend({ schemaName: 'organisation' });
+	  
+					// check organisation super admin
+						 var User = StackMob.Model.extend({ schemaName: 'organisation' });
+						var user = new StackMob.User({ });
+						var q = new StackMob.Collection.Query();
+						q.equals('organisation_id', localStorage.getItem("stackmob.oauth2.user"));
+						user.query(q, {
+								success:function(modal) {
+									array = modal.toJSON();
+									console.debug(array);
+									var super_admin = array[0].super_admin;
+									//alert(super_admin);
+									if(super_admin == "true") {
+										$('#admin_settings').show();
+									}
+								} 
+							}); 
+					// end check organisation super admin
+						  		
+			// organisation app icon image
+			/* var User = StackMob.Model.extend({ schemaName: 'organisation' });
 			var user = new StackMob.User({ });
 			var q = new StackMob.Collection.Query();
 			q.equals('organisation_id', localStorage.getItem("stackmob.oauth2.user"));
@@ -76,7 +149,7 @@
 						$('#org_icon').attr('value', val);
 						//alert(val);
 					} 
-				});  
+				}); */
 	  	// end organisation icon
 		
 	  var markersArray = [];
@@ -107,23 +180,29 @@
 					{
 						if(array[i].org_img == localStorage.getItem("stackmob.oauth2.user"))
 						{
-							 
-							 $('#last_mod_date').html(array[i].lastmoddate);
+							
+							 //$('#last_mod_date').html(array[i].lastmoddate);
 							 //$('.current_date_time').html(current_date_time);
 							 
 							 var val = array[i].lastmoddate;
 							 $('#last_mod_date').attr('value', val);
 							 
-							 /* var val = array[0].deviceid;
-							 $('#device_id').attr('value', val); */
+							 var val = array[i].dev_img;
+							 $('#device_id').attr('value', val); 
 							 
 							 var val = array[i].imageid;
 							 $('#image_id').attr('value', val);
 							 
+							 var val = array[i].failure_message;
+							 $('#failure_message').attr('value', val);
+							 
+							 var val = array[i].image_play_status;
+							 $('#video_play_status').attr('value', val);
+							 
 							 var val = array[i].mobile_no;
 							 $('#mobile_no').attr('value', val);
 							 
-							  var val = array[0].model;
+							  var val = array[i].model;
 							 $('#model').attr('value', val); 
 							 
 							  var val = array[i].feedback;
@@ -132,19 +211,23 @@
 							 var val = array[i].latitude+","+array[i].longitude;
 							$('#latlng').attr('value', val);
 							
-							/* for(var i=0; i<=2; i++)
-							{
-							  var val = array[i].user_name;
-							$('#data'+i).attr('value', val);
-							} 
-							
-							 for(var i=0; i<=2; i++)
-							{
-							  var val = array[i].geolocation.lat+","+array[i].geolocation.lon;
-							  $('#latlng'+i).attr('value', val);
-							} */
+							// organisation app icon image
+							 var Todo = StackMob.Model.extend({ schemaName: 'image' });
+							var myTodo = new Todo();
+							var q = new StackMob.Collection.Query();
+							q.equals('image_id', array[i].imageid );
+							myTodo.query(q, {
+									success:function(modal) {
+										array = modal.toJSON();
+										//console.debug(array);
+										var val = array[0].image_icon;
+										$('#org_icon').attr('value', val);
+									} 
+								}); 
+						// end organisation icon
 							
 							initialize();
+							alert("The map will show the information and location for your last image scan");
 							exit();
 							} //  end if condition
 						} //end for loop
@@ -187,31 +270,48 @@
 					position: results[0].geometry.location,
 				});
 				
-				// to find the place name by latlng
-					/* var autocomplete = new google.maps.places.Autocomplete(input, {
-						 types: ["geocode"]
-					 });
-					 autocomplete.bindTo('bounds', map);
-					 var place = autocomplete.getPlace();
-					 alert(place.name); */
-				
 				 markersArray.push(marker);
 				 
 					 /* var infowindow = new google.maps.InfoWindow({
                         content: name
                     }); */ 
-					//var device_id = document.getElementById("device_id").getAttribute("value");
+					var device_id = document.getElementById("device_id").getAttribute("value");
 					var image_id = document.getElementById("image_id").getAttribute("value");
+					var failure_message = document.getElementById("failure_message").getAttribute("value");
+					var video_play_status = document.getElementById("video_play_status").getAttribute("value");
 					var mobile_no = document.getElementById("mobile_no").getAttribute("value");
 					var model = document.getElementById("model").getAttribute("value");
 					var feedback = document.getElementById("feedback").getAttribute("value");
 					var org_icon = document.getElementById("org_icon").getAttribute("value");
+					var lastmod_date = document.getElementById("last_mod_date").getAttribute("value");
+					//alert(org_icon);
 					var infowindow = new google.maps.InfoWindow();
-					//infowindow.setContent("Device-id  : " +device_id + "<br/> Mobile_no : "+mobile_no + "<br/> Model : "+model + "<br/> Address : "+address);
-					infowindow.setContent("<img src='"+org_icon+"' style='width:150px; height:50px;' /> <br/> Image-id  : " +image_id + "<br/> Mobile_no : "+mobile_no + "<br/> Address : "+address + "<br/> Feedback : "+feedback+"<br/>Device model  : " +model);
-				//google.maps.event.addListener(marker, 'click', function(event) {
+					
+					//infowindow.setContent("<img src='"+org_icon+"' style='width:50px; height:60px;' /> <br/><br/> Image-id  : " +image_id + "<br/> Mobile_no : "+mobile_no + "<br/> Address : "+address + "<br/> Feedback : "+feedback+"<br/>Device model  : " +model);
+					
+					if(video_play_status == 'true') {
+						failure_message = "<span style='color:green'>"+failure_message+"</span>";
+						video_play_status = "<span style='color:green'>"+video_play_status+"</span>";
+					}
+					if(video_play_status == 'false') {
+						failure_message = "<span style='color:red'>"+failure_message+"</span>";
+						video_play_status = "<span style='color:red'>"+video_play_status+"</span>";
+					}
+					
+					//if((org_icon != '') || (org_icon != null)) {
+						var info = "<img src='"+org_icon+"' style='width:50px; height:60px;' alt='"+image_id+"' /> <b>Time  :</b> " +new Date(lastmod_date/1000) + "<br/><b>Failure Message  :</b> " +failure_message + "<br/> <b>video_play_status  :</b> " +video_play_status + "<br/> <b>Image-id  :</b> " +image_id + "<br/> <b>Mobile_no : </b>"+mobile_no + "<br/> <b>Address :</b> "+address + "<br/><b>Device-id  :</b> " +device_id+ "<br/><b>Device model  : </b>" +model+"<br/> <b>Feedback :</b> "+feedback;
+					//}
+					/* if((org_icon == '') || (org_icon == null)) {
+						var info = "Image-id  : " +image_id + "<br/> Mobile_no : "+mobile_no + "<br/> Address : "+address + "<br/> Feedback : "+feedback+"<br/>Device model  : " +model;
+					} */
+						
+					infowindow.setContent(info);
+				
+                    infowindow.open(map, marker);
+                   	
+					google.maps.event.addListener(marker, 'click', function(event) {
                         infowindow.open(map, marker);
-                    //});		 
+                    });		 
 				
 			  } else {
 				alert("Geocode was not successful for the following reason: " + status);
@@ -220,13 +320,6 @@
 		   });
 		   
 			 }  //end show_marker function
-			 
-			 /* var timeInterval = 1000;
-				for (var i = 0; i <= 2; i++ ) {
-					setTimeout(show_marker, timeInterval);
-					timeInterval += 1000;
-				} */
-			 
 			 
 			 var mapOptions = {
 			  zoom: 10,
@@ -238,8 +331,7 @@
 			}
 			map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
 			
-			
-			function check_newentry() {
+		function check_newentry() {
 		//fetch current date and time 
 				//var currentTime = new Date();
 				//var current_date_time = Math.ceil(currentTime.getTime()/1000);
@@ -275,46 +367,58 @@
 					{
 						if(array[i].org_img == localStorage.getItem("stackmob.oauth2.user"))
 						{
+						
 							 //var entry_date_time = array[0].entry_date_time;
 							  //var lastmod_date = Math.ceil(((array[0].lastmoddate)/1000)+1);
 							  var lastmod_date = array[i].lastmoddate;
 							  
 							  //$('#data').html(array[0].user_name);
-							 $('#last_mod_date').html(lastmod_date);
+							 //$('#last_mod_date').html(lastmod_date);
 							 //$('.current_date_time').html(current_date_time);
 							 
 							 var lastmod_date_old = document.getElementById("last_mod_date").getAttribute("value");
 							 
-							 /*var val = array[0].deviceid;
-							 $('#device_id').attr('value', val); */
+							 var val = array[i].dev_img;
+							 $('#device_id').attr('value', val); 
 							 
 							 var val = array[i].imageid;
 							 $('#image_id').attr('value', val);
 							 
+							 var val = array[i].failure_message;
+							 $('#failure_message').attr('value', val);
+							 
+							 var val = array[i].image_play_status;
+							 $('#video_play_status').attr('value', val);
+							 
 							 var val = array[i].mobile_no;
 							 $('#mobile_no').attr('value', val);
 							 
-							 /* var val = array[0].model;
-							 $('#model').attr('value', val); */
+							 var val = array[i].model;
+							 $('#model').attr('value', val);
 							 
 							 var val = array[i].feedback;
 							 $('#feedback').attr('value', val);
 							 
 							var val = array[i].latitude+","+array[i].longitude;
 							$('#latlng').attr('value', val);
-							 
-							 /* for(var i=0; i<=2; i++)
-							{
-							  var val = array[i].geolocation.lat+","+array[i].geolocation.lon;
-							$('#latlng'+i).attr('value', val);
-							}
 							
-							 for(var i=0; i<=2; i++)
-							{
-							  var val = array[i].user_name;
-							$('#data'+i).attr('value', val);
-							} */
-							
+							// organisation app icon image
+							var Todo = StackMob.Model.extend({ schemaName: 'image' });
+							var myTodo = new Todo();
+							var q = new StackMob.Collection.Query();
+							q.equals('image_id', array[i].imageid );
+							myTodo.query(q, {
+									success:function(modal) {
+										array = modal.toJSON();
+										//console.debug(array);
+										var val = array[0].image_icon;
+										//var val = "hello";
+										$('#org_icon').attr('value', val);
+										//alert(val);
+									} 
+								});  
+						// end organisation icon
+													 
 							if(lastmod_date_old < lastmod_date)
 							{
 								/* var timeInterval = 1000;
@@ -407,15 +511,17 @@ padding-top:0px;
               <li class="" id="my_dashboard">
                 <a href="dashboard.html">MY DASHBOARD </a>
               </li>
-              <li class="" id="settings">
-                <a href="settings.html">SETTINGS</a>
-              </li>
 			  <li class="" id="stats">
                 <a href="statistics.html">SATISTICS</a>
               </li>
+              <li class="" id="settings">
+                <a href="other_organisation_settings.html">SETTINGS</a>
+              </li>
+			  <li class="" id="admin_settings" style="display:none;">
+			  	<a href="other_admin_settings.html">ADMIN SETTINGS</a>
+			  </li>
               <li class="" id="logout_btn">
                 <a id="logout" href="#LOGOUT">LOGOUT</a>
-
               </li>
             </ul>
           </div>
@@ -424,82 +530,23 @@ padding-top:0px;
       </div>
 <header class="jumbotron subhead" style="height:45px;"></header>	
 	<div id="org_icon" value=""></div>
-  <!-- <div id="device_id" value=""></div> -->
-  <div id="image_id" value=""></div>
-  <div id="mobile_no" value=""></div>
-   <div id="model" value=""></div> 
-  <div id="feedback" value=""></div>
-<div id="address" value=""></div>
- <!-- <div id="data0" value=""></div>
-  <div id="data1" value=""></div>
-  <div id="data2" value=""></div> -->
-  <div class="current_date_time"></div>
-  <div class="last_mod_date"></div> 
-  
-  <div id="last_mod_date" value="" style="display:none;"></div> 
-  
-   <div id="latlng" value=""></div>
-   <!-- <div id="latlng0" value=""></div>
-   <div id="latlng1" value=""></div>
-   <div id="latlng2" value=""></div> -->
+	<div id="failure_message" value=""></div>
+	<div id="video_play_status" value=""></div>
+ 	<div id="device_id" value=""></div>
+  	<div id="image_id" value=""></div>
+  	<div id="mobile_no" value=""></div>
+   	<div id="model" value=""></div> 
+  	<div id="feedback" value=""></div>
+	<div id="address" value=""></div>
+	<div id="last_mod_date" value=""></div> 
+   	<div id="latlng" value=""></div>
+ <!-- <div class="current_date_time"></div> -->
    
-<!--<div id="test" style='height:50px;'></div>-->
 <div id="map_canvas"  style="width: 80%; height: 85%; border: 1px solid black; margin-left:10%"></div>  
 <div id="footer">
       <div class="container">
         <p class="muted credit">Design and Developed by <a href="http://mixorg.com" >MIXORG</a> </p>
       </div>
     </div>
- 
-<script type="text/javascript">
-$(document).ready(function() {
-//onload validation
-var User = StackMob.Model.extend({ schemaName: 'organisation' });
-var username=localStorage.getItem("stackmob.oauth2.user");
-var user = new StackMob.User({ organisation_id: username }); 
-
-//alert(username);
-StackMob.isLoggedIn({
-  yes: function(username){
-    console.log(username + " is logged in.");
-  },
-  no: function(){
-   // console.log("No one is currently logged in.");
-   window.location="login.html";
-  }
-});
-  $("#logout").click(function(e){
-$( "#dialog-confirm" ).dialog( "open" );
-});
-
-$( "#dialog-confirm" ).dialog({
- 
-	 autoOpen: false,
-      resizable: true,
-      height:160,
-      modal: true,
-      buttons: {
-        "YES": function() {
-		user.logout({
-  success: function(model) {
-    //show a success message/update your UI
-		window.location="login.html"
-  }, 
-  error: function(model, response) {
-    //show a failure message in your app    
-	alert("error");
-  }
-});
-          $( this ).dialog( "close" );
-        },
-        "NO": function() {
-          $( this ).dialog( "close" );
-		
-        }
-      }
-    });
-});
-
-</script>	
-	</body>
+</body>
 </html>
