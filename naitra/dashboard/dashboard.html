@@ -166,7 +166,7 @@ $(document).ready(function() {
 							 
 							 $("#ui").html("<tr><th>S.No.</th> <th>Device-id</th> <th>Image-id</th> <th>Failure Message</th> <th>Video Play Status</th> <th style='width:200px;'>Feedback</th> <th>Mobile-no</th> <th>Model</th> <th>Location</th> <th>Time</th></tr>");
 							 
-							 var max_page_records = 5;
+							 var max_page_records = 10;
 							 var first_record_no = 1;
 							 
 							for(var i=0; i<=count; i++)
@@ -204,7 +204,7 @@ $(document).ready(function() {
 			function pagination() {
 				
 				//calculate no. of pages accc. to records
-				var max_page_records = 5;
+				var max_page_records = 10;
 				
 				var org_records = document.getElementById("org_records").getAttribute("value");
 				org_records = parseInt(org_records)+1;
