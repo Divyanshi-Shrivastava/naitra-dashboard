@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://static.stackmob.com/js/stackmob-js-0.8.0-bundled-min.js"></script>
+
+ <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
+ <link rel="stylesheet" href= "http://code.jquery.com/ui/1.10.2/themes/dark-hive/jquery-ui.css" />
+<!-- <link rel="stylesheet" href= "http://code.jquery.com/ui/1.10.2/themes/redmond/jquery-ui.css" />-->
+  <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+  <script type="text/javascript" src="http://twitter.github.com/bootstrap/assets/js/bootstrap-modal.js"></script>
+ <script type="text/javascript" src="style/js/bootstrap.js"></script>
+ 
+<link type="text/css" rel="stylesheet" href="style/css/bootstrap.css"></link>
+
+<script type="text/javascript">
+      /* <![CDATA[ */
+      // Initialize StackMob object
+      // Copy your init data from here: https://dashboard.stackmob.com/sdks/js/config
+      // Your other app information is here: https://dashboard.stackmob.com/settings
+      StackMob.init({
+        appName: 'my_first_app',
+        clientSubdomain: 'divyanshimixorgcom',
+        publicKey: '6dba825e-b26f-4626-b007-7b09d60ad718',
+        apiVersion : 0,
+  	userSchema: 'organisation',
+	    loginField: 'organisation_id',
+	    passwordField: 'password',
+      });
+      /* ]]> */
+</script> 
+
+<script type="text/javascript">
+$(document).ready(function() {
+	var User = StackMob.Model.extend({ schemaName: 'organisation' });		
+	var user = new StackMob.User({ organisation_id: localStorage.getItem("stackmob.oauth2.user") });
+	user.isLoggedIn({
+	  yes: function(){
+		//console.log("Logged in.");
+		//alert("logged in");
+	  },
+	  no: function(){
+		//console.log("Not logged in.");
+		window.location = "login.html";
+		//alert("not logged in");
+	  }
+	});
+	$("#logout").click(function(e){
+$( "#dialog-confirm" ).dialog( "open" );
+});
+
+$( "#dialog-confirm" ).dialog({
+ 
+	 autoOpen: false,
+      resizable: true,
+      height:160,
+      modal: true,
+      buttons: {
+        "YES": function() {
+		user.logout({
+  success: function(model) {
+    //show a success message/update your UI
+		window.location="login.html"
+  }, 
+  error: function(model, response) {
+    //show a failure message in your app    
+	alert("error");
+  }
+});
+          $( this ).dialog( "close" );
+        },
+        "NO": function() {
+          $( this ).dialog( "close" );
+		
+        }
+      }
+    });
+
+
+ 
+
+});
+ 
+ 
+ </script> 
+
+<script type="text/javascript">
+      /* <![CDATA[ */
+     $(document).ready(function() {
+	 
+	 		// check organisation super admin
+						 var User = StackMob.Model.extend({ schemaName: 'organisation' });
+						var user = new StackMob.User({ });
+						var q = new StackMob.Collection.Query();
+						q.equals('organisation_id', localStorage.getItem("stackmob.oauth2.user"));
+						user.query(q, {
+								success:function(modal) {
+									array = modal.toJSON();
+									console.debug(array);
+									var super_admin = array[0].super_admin;
+									//alert(super_admin);
+									if(super_admin == "true") {
+										$('#admin_settings').show();
+									}
+								} 
+							}); 
+					// end check organisation super admin
+			
+			result();
+			function result() {				
+				// fetch all unique image-id from image_search schema
+	  			var Organisation_schema = StackMob.Model.extend({ schemaName: 'organisation' });
+				var organisation = new Organisation_schema({ });
+				organisation.fetch({
+						success: function(modal) {
+						   	var array = modal.toJSON();
+
+								var key;
+								var count = 0;
+								for(key in array) {  //count no. of elements in image_search schema
+									 if(array.hasOwnProperty(key)) {
+										count ++;
+									 }
+								 }
+								 //alert(count);
+								 
+							for(var i=0; i<=count; i++)
+							{
+								//$("#other_list").before("<option>"+array[i].organisation_id+"</option>");	
+								$(".organisation_id1").append("<option>"+array[i].organisation_id+"</option>");
+								$(".organisation_id2").append("<option>"+array[i].organisation_id+"</option>");
+								$(".organisation_id3").append("<option>"+array[i].organisation_id+"</option>");
+								$(".organisation_id4").append("<option>"+array[i].organisation_id+"</option>");	
+								$(".organisation_id5").append("<option>"+array[i].organisation_id+"</option>");							
+							} // end for loop
+						} //end success
+				 	 }); // end feth unique image id- imagesearch schema query
+				} // end result function
+	});			 
+</script>
+
+<style>
+	#footer {
+	width: 100%;
+	position: fixed;
+	bottom: 0px;
+	background-color: #000;
+	height: auto;
+	}
+	.container .credit {
+	float: right;
+	margin: 10px 0;
+	}
+	.muted {
+	color: #999999;
+	}
+	.ui-dialog .ui-dialog-title {
+	font-weight: bold;
+	font-size: 18px;
+	}
+	.ui-dialog .ui-dialog-buttonpane {
+	font-size: 14px;
+	}
+	.content
+	{
+	display:none;
+	}
+	.ui-dialog-titlebar-close {
+	 visibility: hidden;
+	}
+	.active
+	{
+	padding-top:0px;
+	}
+	.navbar .nav > li {
+	
+	padding-top:0px;
+	}
+	
+	label {
+	font-weight:bold;
+	}
+	.button {
+	float:left;
+	}
+	.setting_block {
+	background-color: #ffffff;
+border: 1px solid #999;
+border: 1px solid rgba(0, 0, 0, 0.3);
+-webkit-border-radius: 6px;
+-moz-border-radius: 6px;
+border-radius: 6px;
+-webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+-moz-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+-webkit-background-clip: padding-box;
+-moz-background-clip: padding-box;
+background-clip: padding-box;
+padding:10px;
+margin:20px;
+	}
+</style>
+
+
+ 
+</head>
+<body>
+<div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+          <a class="brand" href="">Naitra<img src="style/img/eye3.png"/>Dashboard</a>
+          <div class="nav-collapse collapse pull-right">
+            <ul class="nav">
+              <li class="" id="home">
+                <a href="index.html">HOME</a>
+              </li>
+              <li class="" id="my_dashboard">
+                <a href="dashboard.html">MY DASHBOARD </a>
+              </li>
+			  <li class="" id="stats">
+                <a href="statistics.html">SATISTICS</a>
+              </li>
+              <li class="active">
+                <a href="other_organisation_settings.html">SETTINGS</a>
+              </li>
+			  <li class="active" id="admin_settings" style="display:none;">
+			  	<a href="other_admin_settings.html">ADMIN SETTINGS</a>
+			  </li>
+              <li class="" id="logout_btn">
+                <a id="logout" href="#LOGOUT">LOGOUT</a>
+
+              </li>
+            </ul>
+          </div>
+		  <div id="dialog-confirm"  title="Logout" style="font-size:14px;"><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>Do you really want to Logout??? </div> 
+        </div>
+      </div>
+	<header class="jumbotron subhead" style="height:45px;"></header>
+ 
+
+	
+<div class="container" style="width:60%;">
+
+<!-- CHANGE ORGANISATION STATUS -->
+	<div class="setting_block"> 
+		<div class="modal-header">
+				<h3 id="myModalLabel">Change Organisation Status</h3>
+		</div>
+		<label for='upload'>Organisation-id</label>
+			<select class="organisation_id1" name="organisation_id1" onChange="check_organisation_status();">
+			<option>Select an Organisation-id</option>
+			</select>
+			
+			<script type="text/javascript">
+				function check_organisation_status() {
+					if($('.organisation_id1').val()=='Select an Organisation-id')
+					{
+						$('#scan_limit').attr('value', '');
+					}
+					else
+					{
+						// fetch organisation previous scan limit
+							var organisation_id = $('.organisation_id1').val();
+							 var User = StackMob.Model.extend({ schemaName: 'organisation' });
+							var user = new StackMob.User({ });
+							var q = new StackMob.Collection.Query();
+							q.equals('organisation_id', organisation_id);
+							user.query(q, {
+									success:function(modal) {
+										array = modal.toJSON();
+										console.debug(array);
+										var organisation_status = array[0].organisation_status;
+										//alert(scan_limit);
+										$('#organisation_status').attr('value', organisation_status);
+									} 
+								}); 
+						// fetch organisation previous scan limit
+					}
+				}
+			</script>
+		<!--</div>-->
+		<br/><br/>
+		<!--<div class="modal-body"> -->   
+		<label>Organisatiob Status (Enable or Disable an organisation):</label>		
+		<select id="organisation_status">
+			<option value="select_an_option">Select an option</option>
+			<option value="enable">Enable</option>
+			<option value="disable">Disable</option>
+		</select>
+			
+		<br/><br/>
+		<input type="button" name="save_organisationstatus_btn" id="save_organisationstatus_btn" value="Save" />	
+	</div>
+	<!-- END CHANGE ORGANISATION STATUS -->
+	
+	
+	<!-- CHANGE SCAN LIMIT -->
+	<div class="setting_block">
+	<div class="modal-header">
+            <h3 id="myModalLabel"> Change Scan Limit</h3>
+    </div>
+	<label for='upload'>Organisation-id</label>
+		<select class="organisation_id2" name="organisation_id2" onChange="check_scan_limit();">
+		<option>Select an Organisation-id</option>
+		</select>
+		
+		<script type="text/javascript">
+			function check_scan_limit() {
+				if($('.organisation_id2').val()=='Select an Organisation-id')
+				{
+					$('#scan_limit').attr('value', '');
+				}
+				else
+				{
+					// fetch organisation previous scan limit
+						var organisation_id = $('.organisation_id2').val();
+						 var User = StackMob.Model.extend({ schemaName: 'organisation' });
+						var user = new StackMob.User({ });
+						var q = new StackMob.Collection.Query();
+						q.equals('organisation_id', organisation_id);
+						user.query(q, {
+								success:function(modal) {
+									array = modal.toJSON();
+									console.debug(array);
+									var scan_limit = array[0].scan_limit;
+									//alert(scan_limit);
+									$('#scan_limit').attr('value', scan_limit);
+								} 
+							}); 
+					// fetch organisation previous scan limit
+				}
+			}
+		</script>
+	<!--</div>-->
+	<br/><br/>
+    <!--<div class="modal-body"> -->   
+	<label>Enter Organisation Scan Limit:</label>
+    	<input type="text" id="scan_limit" name="scan_limit" /> 
+		<br/><br/>
+		<input type="button" name="save_scanlimit_btn" id="save_scanlimit_btn" value="Save" />
+	</div>
+	<!-- END SCAN LIMIT -->
+	
+	
+	<!-- CHANGE SCAN VALIDATION -->
+	<div class="setting_block">
+	<div class="modal-header">
+            <h3 id="myModalLabel"> Change Scan Validation</h3>
+    </div>
+	<label for='upload'>Organisation-id</label>
+		<select class="organisation_id3" name="organisation_id3" onChange="check_scan_validation();">
+		<option>Select an Organisation-id</option>
+		</select>
+		
+		<script type="text/javascript">
+			function check_scan_validation() {
+				if($('.organisation_id3').val()=='Select an Organisation-id')
+				{
+					$('#organisation_scan_validation').attr('value', 'select_an_option');
+				}
+				else
+				{
+					// fetch organisation previous scan limit
+						var organisation_id = $('.organisation_id3').val();
+						 var User = StackMob.Model.extend({ schemaName: 'organisation' });
+						var user = new StackMob.User({ });
+						var q = new StackMob.Collection.Query();
+						q.equals('organisation_id', organisation_id);
+						user.query(q, {
+								success:function(modal) {
+									array = modal.toJSON();
+									console.debug(array);
+									var organisation_scan_validation = array[0].scan_validation;
+									//alert(scan_limit);
+									$('#organisation_scan_validation').attr('value', organisation_scan_validation);
+								} 
+							}); 
+					// fetch organisation previous scan limit
+				}
+			}
+		</script>
+	<!--</div>-->
+	<br/><br/>
+    <!--<div class="modal-body"> -->   
+	<label>Scan validation (Scan validation in the application):</label>		
+		<select id="organisation_scan_validation">
+			<option value="select_an_option">Select an option</option>
+			<option value="true">True</option>
+			<option value="false">False</option>
+		</select>
+		
+		<br/><br/>
+		<input type="button" name="save_scanvalidation_btn" id="save_scanvalidation_btn" value="Save" />
+	</div>
+	<!-- END CHANGE SCAN VALIDATION -->
+	
+	
+	<!-- CHANGE DEVICE VALIDATION -->
+	<div class="setting_block">
+	<div class="modal-header">
+            <h3 id="myModalLabel"> Change Device Validation</h3>
+    </div>
+	<label for='upload'>Organisation-id</label>
+		<select class="organisation_id5" name="organisation_id5" onChange="check_device_validation();">
+		<option>Select an Organisation-id</option>
+		</select>
+		
+		<script type="text/javascript">
+			function check_device_validation() {
+				if($('.organisation_id5').val()=='Select an Organisation-id')
+				{
+					$('#organisation_device_validation').attr('value', 'select_an_option');
+				}
+				else
+				{
+					// fetch organisation previous scan limit
+						var organisation_id = $('.organisation_id5').val();
+						 var User = StackMob.Model.extend({ schemaName: 'organisation' });
+						var user = new StackMob.User({ });
+						var q = new StackMob.Collection.Query();
+						q.equals('organisation_id', organisation_id);
+						user.query(q, {
+								success:function(modal) {
+									array = modal.toJSON();
+									console.debug(array);
+									var organisation_device_validation = array[0].device_validation;
+									//alert(scan_limit);
+									$('#organisation_device_validation').attr('value', organisation_device_validation);
+								} 
+							}); 
+					// fetch organisation previous scan limit
+				}
+			}
+		</script>
+	<!--</div>-->
+	<br/><br/>
+    <!--<div class="modal-body"> -->   
+	<label>Device validation (Device validation in the application):</label>		
+		<select id="organisation_device_validation">
+			<option value="select_an_option">Select an option</option>
+			<option value="true">True</option>
+			<option value="false">False</option>
+		</select>
+		
+		<br/><br/>
+		<input type="button" name="save_devicevalidation_btn" id="save_devicevalidation_btn" value="Save" />
+	</div>
+	<!-- END DEVICE VALIDATION -->
+	
+	
+	<!-- CHANGE SUPER ADMIN -->
+	<div class="setting_block">
+		<div class="modal-header">
+				<h3 id="myModalLabel"> Change Super Admin</h3>
+		</div>
+	<label for='upload'>Organisation-id</label>
+		<select class="organisation_id4" name="organisation_id4" onChange="check_super_admin();">
+		<option>Select an Organisation-id</option>
+		</select>
+		
+		<script type="text/javascript">
+			function check_super_admin() {
+				if($('.organisation_id4').val()=='Select an Organisation-id')
+				{
+					$('#organisation_super_admin').attr('value', 'select_an_option');
+				}
+				else
+				{
+					// fetch organisation previous scan limit
+						var organisation_id = $('.organisation_id4').val();
+						 var User = StackMob.Model.extend({ schemaName: 'organisation' });
+						var user = new StackMob.User({ });
+						var q = new StackMob.Collection.Query();
+						q.equals('organisation_id', organisation_id);
+						user.query(q, {
+								success:function(modal) {
+									array = modal.toJSON();
+									console.debug(array);
+									var organisation_super_admin = array[0].super_admin;
+									//alert(scan_limit);
+									$('#organisation_super_admin').attr('value', organisation_super_admin);
+								} 
+							}); 
+					// fetch organisation previous scan limit
+				}
+			}
+		</script>
+	<!--</div>-->
+	<br/><br/>
+    <!--<div class="modal-body"> -->   
+	<label>Super Admin (Whether organisation is super admin or not):</label>		
+		<select id="organisation_super_admin">
+			<option value="select_an_option">Select an option</option>
+			<option value="true">True</option>
+			<option value="false">False</option>
+		</select>
+		
+		<br/><br/>
+		<input type="button" name="save_superadmin_btn" id="save_superadmin_btn" value="Save" style="margin-bottom:30px;" />
+	</div>
+	<!-- END CHANGE SUPER ADMIN -->
+	
+</div>  <!-- END CONTAINER -->
+  
+  <div id="footer">
+      <div class="container">
+        <p class="muted credit">Design and Developed by <a href="http://mixorg.com">MIXORG</a> </p>
+      </div>
+    </div>
+<script type="text/javascript">
+  //on click of save(scan limit) button
+$("#save_organisationstatus_btn").click(function() {
+   		var organisation_id = $(".organisation_id1").val();
+		var organisation_status = $("#organisation_status").val();
+		if(organisation_id == 'Select an Organisation-id')
+		{
+			$(".organisation_id1").focus();
+			//$("#error_name").show();
+			alert("Please select the organisation-id");
+		}
+		else if(organisation_status == 'select_an_option')
+		{
+			$("#organisation_status").focus();
+			//$("#error_name").show();
+			alert("Please select the organisation status");
+		}
+		else {
+				//update stackmob - update scan limit in organisation schema
+				var User = StackMob.Model.extend({ schemaName: 'organisation' });
+				var user = new StackMob.User({ organisation_id: organisation_id });
+				user.save({ organisation_status: organisation_status }, {
+					success: function(model) {
+						console.log(model.toJSON());
+						alert("Organisation Status is successfully saved");
+						//result();
+					},
+					error: function(model, response) {
+						console.debug(response);
+						alert("error");
+					}
+				});
+				// end update stackmob 			
+		} // end else 
+ 	});
+	//end - on click of save(scan limit) button
+</script>
+
+<script type="text/javascript">
+  //on click of save(scan limit) button
+$("#save_scanlimit_btn").click(function() {
+   		var organisation_id = $(".organisation_id2").val();
+		var scan_limit = $("#scan_limit").val();
+		if(organisation_id == 'Select an Organisation-id')
+		{
+			$(".organisation_id2").focus();
+			//$("#error_name").show();
+			alert("Please select the organisation-id");
+		}
+		else if (scan_limit == '')
+		{
+			$("#scan_limit").focus();
+			//$("#error_name").show();
+			alert("Please enter the organisation Scan limit");
+		}
+		else {
+				scan_limit = parseInt(scan_limit);
+				//update stackmob - update scan limit in organisation schema
+				var User = StackMob.Model.extend({ schemaName: 'organisation' });
+				var user = new StackMob.User({ organisation_id: organisation_id });
+				user.save({ scan_limit: scan_limit }, {
+					success: function(model) {
+						console.log(model.toJSON());
+						alert("Scan limit is successfully saved");
+						//result();
+					},
+					error: function(model, response) {
+						console.debug(response);
+						alert("error");
+					}
+				});
+				// end update stackmob 			
+		} // end else 
+ 	});
+	//end - on click of save(scan limit) button
+</script>
+
+<script type="text/javascript">
+  //on click of save(scan limit) button
+$("#save_scanvalidation_btn").click(function() {
+   		var organisation_id = $(".organisation_id3").val();
+		var organisation_scan_validation = $("#organisation_scan_validation").val();
+		if(organisation_id == 'Select an Organisation-id')
+		{
+			$(".organisation_id3").focus();
+			//$("#error_name").show();
+			alert("Please select the organisation-id");
+		}
+		else if(organisation_scan_validation == 'select_an_option')
+		{
+			$("#organisation_scan_validation").focus();
+			//$("#error_name").show();
+			alert("Please select the scan validation - true or false");
+		}
+		else {
+				organisation_scan_validation = eval(organisation_scan_validation);
+				//update stackmob - update scan limit in organisation schema
+				var User = StackMob.Model.extend({ schemaName: 'organisation' });
+				var user = new StackMob.User({ organisation_id: organisation_id });
+				user.save({ scan_validation: organisation_scan_validation }, {
+					success: function(model) {
+						//console.log(model.toJSON());
+						alert("Scan validation is successfully saved");
+						//result();
+					},
+					error: function(model, response) {
+						//console.debug(response);
+						alert("error");
+					}
+				});
+				// end update stackmob 			
+		} // end else 
+ 	});
+	//end - on click of save(scan limit) button
+</script>
+
+<script type="text/javascript">
+  //on click of save(scan limit) button
+$("#save_superadmin_btn").click(function() {
+   		var organisation_id = $(".organisation_id4").val();
+		var organisation_super_admin = $("#organisation_super_admin").val();
+		if(organisation_id == 'Select an Organisation-id')
+		{
+			$(".organisation_id4").focus();
+			//$("#error_name").show();
+			alert("Please select the organisation-id");
+		}
+		else if(organisation_super_admin == 'select_an_option')
+		{
+			$("#organisation_super_admin").focus();
+			//$("#error_name").show();
+			alert("Please select the super admin - true or false");
+		}
+		else {
+				//update stackmob - update scan limit in organisation schema
+				var User = StackMob.Model.extend({ schemaName: 'organisation' });
+				var user = new StackMob.User({ organisation_id: organisation_id });
+				user.save({ super_admin: organisation_super_admin }, {
+					success: function(model) {
+						//console.log(model.toJSON());
+						alert("Super admin status is successfully saved");
+						//result();
+					},
+					error: function(model, response) {
+						//console.debug(response);
+						alert("error");
+					}
+				});
+				// end update stackmob 			
+		} // end else 
+ 	});
+	//end - on click of save(scan limit) button
+</script>
+
+<script type="text/javascript">
+  //on click of save(scan limit) button
+$("#save_devicevalidation_btn").click(function() {
+   		var organisation_id = $("#organisation_id5").val();
+		var organisation_device_validation = $("#organisation_device_validation").val();
+		if(organisation_id == 'Select an Organisation-id')
+		{
+			$("#organisation_id5").focus();
+			//$("#error_name").show();
+			alert("Please select the organisation-id");
+		}
+		else if(organisation_device_validation == 'select_an_option')
+		{
+			$("#organisation_device_validation").focus();
+			//$("#error_name").show();
+			alert("Please select the device validation - true or false");
+		}
+		else {
+				organisation_device_validation = eval(organisation_device_validation);
+				//update stackmob - update scan limit in organisation schema
+				var User = StackMob.Model.extend({ schemaName: 'organisation' });
+				var user = new StackMob.User({ organisation_id: organisation_id });
+				user.save({ device_validation: organisation_device_validation }, {
+					success: function(model) {
+						//console.log(model.toJSON());
+						alert("Device validation is successfully saved");
+						//result();
+					},
+					error: function(model, response) {
+						//console.debug(response);
+						alert("error");
+					}
+				});
+				// end update stackmob 			
+		} // end else 
+ 	});
+	//end - on click of save(scan limit) button
+</script>
+ <div class="data"></div>
+</body>
+</html>
