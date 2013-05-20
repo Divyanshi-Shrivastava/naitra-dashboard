@@ -1,6 +1,6 @@
 <html>
     <head>
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 	<script type="text/javascript" src="http://static.stackmob.com/js/stackmob-js-0.8.0-bundled-min.js"></script>
 	
 	 <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
@@ -412,7 +412,7 @@ background-clip: padding-box;
 		<!--end css for pagination -->
     </head>
     <body>
-    	<script src="https://connect.facebook.net/en_US/all.js"></script>
+	<script src="https://connect.facebook.net/en_US/all.js"></script>
 	<script>
   //What follows is standard Facebook JS initialization.  See Facebook for more details.
   //Facebook JS SDK code here.  Use your own Facebook App ID
@@ -439,11 +439,8 @@ background-clip: padding-box;
 		<div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
           <a class="brand" href="">Naitra<img src="style/img/eye3.png"/>Dashboard</a>
-          <div class="nav-collapse collapse pull-right">
+          <div class="nav-collapse collapse pull-right" style="min-height:200px;">
             <ul class="nav">
-				<li class="" id="">
-					<a href="javascript:void(0);" id="link-user" class="fb-login-button" scope="email,publish_stream,publish_actions, manage_pages">Link User with Facebook</a>
-				</li>
               <li class="" id="home">
                 <a href="index.html">HOME</a>
               </li>
@@ -453,15 +450,27 @@ background-clip: padding-box;
 			  <li class="" id="stats">
                 <a href="statistics.html">SATISTICS</a>
               </li>
-              <li class="" id="settings">
-                <a href="other_organisation_settings.html">SETTINGS</a>
+              <li class="dropdown" id="settings">
+					<a href="other_organisation_settings.html" class="dropdown-toggle" id="dLabel" role="button" data-toggle="dropdown" data-target="#">
+						SETTINGS <b class="caret"></b>
+					</a>
+					<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+						<li><a href="device_authorization.html">Device Authorization</a></li>
+						<li><a href="other_organisation_settings.html">Other Settings..</a></li>
+					</ul>
               </li>
-			  <li class="" id="admin_settings" style="display:none;">
-			  	<a href="other_admin_settings.html">ADMIN SETTINGS</a>
+			  <li class="dropdown" id="admin_settings" style="display:none;">
+					<a href="other_admin_settings.html" class="dropdown-toggle" id="dLabel" role="button" data-toggle="dropdown" data-target="#">
+						ADMIN SETTINGS <b class="caret"></b>
+					</a>
+					<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+						<li><a href="organisation_authorization.html">Organisation Authorization</a></li>
+						<li><a href="create_organisation.html">Create Organization</a></li>
+						<li><a href="other_admin_settings.html">Other Settings..</a></li>
+					</ul>
 			  </li>
               <li class="" id="logout_btn">
                 <a id="logout" href="#LOGOUT">LOGOUT</a>
-
               </li>
             </ul>
           </div>
