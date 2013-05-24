@@ -68,6 +68,10 @@
 					//alert(url);
 					var url_arr = url.split('='); //convert url string in array	
 					var id= url_arr[1]; //fetch the value of id from url
+					
+					//in case fb comment id variable is added in the url
+					var id_arr = id.split('&'); //convert url string in array	
+					var id= id_arr[0]; //fetch the value of id from url
 					//alert(id);
 					
 			// organisation app icon image
