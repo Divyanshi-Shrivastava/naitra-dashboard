@@ -169,12 +169,6 @@ $(document).ready(function() {
 							 var max_page_records = 5;
 							 var first_record_no = 1;
 							 
-							var url = location.href;   //fetch the current url for unique map view
-							//alert(url);
-							var url = url.split('/'); // split into array
-							url.pop(); //remove the last slash content
-							url = url.join("/") + "/view.html"; // convert the array again in string and add tha file name
-							//alert(url);
 							url = 'view.html';
 							 
 							for(var i=0; i<=count; i++)
@@ -263,12 +257,7 @@ $(document).ready(function() {
 								 
 								 $("#ui").html("<tr><th>S.No.</th> <th>Device-id</th> <th>Image-id</th> <th>Failure Message</th> <th>Video Play Status</th> <th style='width:200px;'>Feedback</th> <th>Mobile-no</th> <th>Model</th> <th>Location</th> <th>Time</th><th>View</th></tr>");
 								 
-							 var url = location.href;   //fetch the current url for unique map view
-							//alert(url);
-							var url = url.split('/'); // split into array
-							url.pop(); //remove the last slash content
-							url = url.join("/") + "/view.html"; // convert the array again in string and add tha file name
-							//alert(url);
+							 url='view.html';
 								 
 								 //var i = (num-1)*max_page_records;
 							var j=0;
