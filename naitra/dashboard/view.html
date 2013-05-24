@@ -1,5 +1,5 @@
 <html>
-  <head>
+	<head>
     <title>Naitra Dashboard</title>
     <link href="http://www.stackmob.com/platform/favicon.ico" type="image/vnd.microsoft.icon" rel="icon" />
     <link href="http://www.stackmob.com/platform/favicon.png" type="image/png" rel="icon" />
@@ -64,10 +64,10 @@
 		<script type="text/javascript">
       /* <![CDATA[ */
       $(document).ready(function() {
-	  			  	var url = location.href;
+	  			  	var url = location.href; // fetch the current url
 					//alert(url);
-					var url_arr = url.split('='); //converturl string in array	
-					var id= url_arr[1];
+					var url_arr = url.split('='); //convert url string in array	
+					var id= url_arr[1]; //fetch the value of id from url
 					//alert(id);
 					
 			// organisation app icon image
@@ -151,7 +151,10 @@
 									} 
 								}); 
 						// end organisation icon
+						
 							
+							
+							//alert(id);
 							initialize();
 							alert("The map will show the information and location for the image scan");							
 					} //end success
@@ -267,6 +270,9 @@
       /* ]]> */
 		</script>
 				<style>
+				.container {
+					width:90%;
+				}
 				 #footer {
 	 width: 100%;
 position: fixed;
@@ -309,6 +315,16 @@ padding-top:0px;
 
 		<head>
   <body>
+  <script>
+  (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=163796343784200";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script> 
+
+  <div id="fb-root"></div>
   
  <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
@@ -316,6 +332,7 @@ padding-top:0px;
         </div>
       </div>
 <header class="jumbotron subhead" style="height:45px;"></header>	
+<div class="container">
 	<div id="org_icon" value=""></div>
 	<div id="failure_message" value=""></div>
 	<div id="video_play_status" value=""></div>
@@ -329,7 +346,27 @@ padding-top:0px;
    	<div id="latlng" value=""></div>
  <!-- <div class="current_date_time"></div> -->
    
-<div id="map_canvas"  style="width: 80%; height: 85%; border: 1px solid black; margin-left:10%"></div>  
+<div id="map_canvas"  style="width: 100%; height: 60%; border: 1px solid black;"></div> 
+<div id="like_wrapper"> </div>
+<div id="comment_wrapper"></div>
+	
+<script type="text/javascript">
+	$(document).ready(function() {
+			var url = location.href; // fetch the current url
+			//alert(url);
+			var url_arr = url.split('='); //convert url string in array	
+			var id= url_arr[1]; //fetch the value of id from url
+			//alert(id);
+			
+			$('#like_wrapper').html('<div class="fb-like" data-href="http://dev.my_first_app.divyanshimixorgcom.stackmobapp.com/naitra/dashboard/view.html?id='+id+'" data-send="false" data-width="450" data-font="arial" data-show-faces="false" style="overflow:hidden; height:25px; width:400px"></div>');
+	
+			$('#comment_wrapper').html('<div class="fb-comments" data-href="http://dev.my_first_app.divyanshimixorgcom.stackmobapp.com/naitra/dashboard/view.html?id='+id+'" data-width="470" data-num-posts="10"></div>');
+			
+	});
+</script>
+</div>
+
+<footer class="jumbotron subhead" style="height:45px;"></footer>	
 <div id="footer">
       <div class="container">
         <p class="muted credit">Design and Developed by <a href="http://mixorg.com" target="_blank" >MIXORG</a> </p>
