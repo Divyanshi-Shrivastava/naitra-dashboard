@@ -164,10 +164,18 @@ $(document).ready(function() {
 								 //alert(count);
 							 //end count total records in image search schema
 							 
-							 $("#ui").html("<tr><th>S.No.</th> <th>Device-id</th> <th>Image-id</th> <th>Failure Message</th> <th>Video Play Status</th> <th style='width:200px;'>Feedback</th> <th>Mobile-no</th> <th>Model</th> <th>Location</th> <th>Time</th></tr>");
+							 $("#ui").html("<tr><th>S.No.</th> <th>Device-id</th> <th>Image-id</th> <th>Failure Message</th> <th>Video Play Status</th> <th style='width:200px;'>Feedback</th> <th>Mobile-no</th> <th>Model</th> <th>Location</th> <th>Time</th><th>View</th></tr>");
 							 
 							 var max_page_records = 5;
 							 var first_record_no = 1;
+							 
+							var url = location.href;   //fetch the current url for unique map view
+							//alert(url);
+							var url = url.split('/'); // split into array
+							url.pop(); //remove the last slash content
+							url = url.join("/") + "/view.html"; // convert the array again in string and add tha file name
+							//alert(url);
+							
 							 
 							for(var i=0; i<=count; i++)
 							{
@@ -183,10 +191,10 @@ $(document).ready(function() {
 							 			$('#last_mod_date').attr('value', val);
 										
 										if(array[i].image_play_status == true) {
-											$("#ui").append("<tr><td>"+(counter+1)+"</td><td>"+array[i].dev_img+"</td><td>"+array[i].imageid+"</td><td style='color:green;'>"+array[i].failure_message+"</td><td style='color:green;'>"+array[i].image_play_status+"</td><td>"+array[i].feedback+"</td><td>"+array[i].mobile_no+"</td><td>"+array[i].model+"</td><td>"+array[i].latitude +","+ array[i].longitude+"</td><td>"+ new Date(array[i].lastmoddate)+"</td></tr>");
+											$("#ui").append("<tr><td>"+(counter+1)+"</td><td>"+array[i].dev_img+"</td><td>"+array[i].imageid+"</td><td style='color:green;'>"+array[i].failure_message+"</td><td style='color:green;'>"+array[i].image_play_status+"</td><td>"+array[i].feedback+"</td><td>"+array[i].mobile_no+"</td><td>"+array[i].model+"</td><td>"+array[i].latitude +","+ array[i].longitude+"</td><td>"+ new Date(array[i].lastmoddate)+"</td><td><a href='"+url+"?id="+array[i].imagesearch_id+"' target='_blank' >View</a></td></tr>");
 										}
 										if(array[i].image_play_status != true) {
-											$("#ui").append("<tr><td>"+(counter+1)+"</td><td>"+array[i].dev_img+"</td><td>"+array[i].imageid+"</td><td style='color:red;'>"+array[i].failure_message+"</td><td style='color:red;'>"+array[i].image_play_status+"</td><td>"+array[i].feedback+"</td><td>"+array[i].mobile_no+"</td><td>"+array[i].model+"</td><td>"+array[i].latitude +","+ array[i].longitude+"</td><td>"+ new Date(array[i].lastmoddate)+"</td></tr>");
+											$("#ui").append("<tr><td>"+(counter+1)+"</td><td>"+array[i].dev_img+"</td><td>"+array[i].imageid+"</td><td style='color:red;'>"+array[i].failure_message+"</td><td style='color:red;'>"+array[i].image_play_status+"</td><td>"+array[i].feedback+"</td><td>"+array[i].mobile_no+"</td><td>"+array[i].model+"</td><td>"+array[i].latitude +","+ array[i].longitude+"</td><td>"+ new Date(array[i].lastmoddate)+"</td><td><a href='"+url+"?id="+array[i].imagesearch_id+"' target='_blank' >View</a></td></tr>");
 										}
 									} //end counter if condition
 									counter++; 
@@ -253,7 +261,14 @@ $(document).ready(function() {
 								 }
 								 //alert(count);
 								 
-								 $("#ui").html("<tr><th>S.No.</th> <th>Device-id</th> <th>Image-id</th> <th>Failure Message</th> <th>Video Play Status</th> <th style='width:200px;'>Feedback</th> <th>Mobile-no</th> <th>Model</th> <th>Location</th> <th>Time</th></tr>");
+								 $("#ui").html("<tr><th>S.No.</th> <th>Device-id</th> <th>Image-id</th> <th>Failure Message</th> <th>Video Play Status</th> <th style='width:200px;'>Feedback</th> <th>Mobile-no</th> <th>Model</th> <th>Location</th> <th>Time</th><th>View</th></tr>");
+								 
+							 var url = location.href;   //fetch the current url for unique map view
+							//alert(url);
+							var url = url.split('/'); // split into array
+							url.pop(); //remove the last slash content
+							url = url.join("/") + "/view.html"; // convert the array again in string and add tha file name
+							//alert(url);
 								 
 								 //var i = (num-1)*max_page_records;
 							var j=0;
@@ -273,10 +288,10 @@ $(document).ready(function() {
 											$('#last_mod_date').attr('value', val);
 											
 												if(array[i].image_play_status == true) {
-													$("#ui").append("<tr><td>"+(counter+1)+"</td><td>"+array[i].dev_img+"</td><td>"+array[i].imageid+"</td><td style='color:green;'>"+array[i].failure_message+"</td><td style='color:green;'>"+array[i].image_play_status+"</td><td>"+array[i].feedback+"</td><td>"+array[i].mobile_no+"</td><td>"+array[i].model+"</td><td>"+array[i].latitude +","+ array[i].longitude+"</td><td>"+ new Date(array[i].lastmoddate)+"</td></tr>");
+													$("#ui").append("<tr><td>"+(counter+1)+"</td><td>"+array[i].dev_img+"</td><td>"+array[i].imageid+"</td><td style='color:green;'>"+array[i].failure_message+"</td><td style='color:green;'>"+array[i].image_play_status+"</td><td>"+array[i].feedback+"</td><td>"+array[i].mobile_no+"</td><td>"+array[i].model+"</td><td>"+array[i].latitude +","+ array[i].longitude+"</td><td>"+ new Date(array[i].lastmoddate)+"</td><td><a href='"+url+"?id="+array[i].imagesearch_id+"' target='_blank' >View</a></td></tr>");
 												}
 												if(array[i].image_play_status != true) {
-													$("#ui").append("<tr><td>"+(counter+1)+"</td><td>"+array[i].dev_img+"</td><td>"+array[i].imageid+"</td><td style='color:red;'>"+array[i].failure_message+"</td><td style='color:red;'>"+array[i].image_play_status+"</td><td>"+array[i].feedback+"</td><td>"+array[i].mobile_no+"</td><td>"+array[i].model+"</td><td>"+array[i].latitude +","+ array[i].longitude+"</td><td>"+ new Date(array[i].lastmoddate)+"</td></tr>");
+													$("#ui").append("<tr><td>"+(counter+1)+"</td><td>"+array[i].dev_img+"</td><td>"+array[i].imageid+"</td><td style='color:red;'>"+array[i].failure_message+"</td><td style='color:red;'>"+array[i].image_play_status+"</td><td>"+array[i].feedback+"</td><td>"+array[i].mobile_no+"</td><td>"+array[i].model+"</td><td>"+array[i].latitude +","+ array[i].longitude+"</td><td>"+ new Date(array[i].lastmoddate)+"</td><td><a href='"+url+"?id="+array[i].imagesearch_id+"' target='_blank' >View</a></td></tr>");
 												}
 												counter++;
 										} //end counter if condition
@@ -482,6 +497,7 @@ background-clip: padding-box;
 		<th>Model</th>
 		<th>Location</th>
 		<th>Time</th>
+		<th>View</th>
 	</tr>
 	</table>
 	<!-- <form>
