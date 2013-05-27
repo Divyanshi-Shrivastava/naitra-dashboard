@@ -66,13 +66,19 @@
       $(document).ready(function() {
 	  			  	var url = location.href; // fetch the current url
 					//alert(url);
-					var url_arr = url.split('='); //convert url string in array	
-					var id= url_arr[1]; //fetch the value of id from url
 					
 					//in case fb comment id variable is added in the url
-					var id_arr = id.split('&'); //convert url string in array	
-					var id= id_arr[0]; //fetch the value of id from url
-					//alert(id);
+					if (url.indexOf('&') != -1)
+					{
+						var url_arr = url.split('&'); //convert url string in array	
+						var url_without_commentid= url_arr[0]; //fetch the value of id from url
+						//alert(id);
+						window.open(url_without_commentid , '_top');
+					}
+					
+					//fetch id from url
+					var url_arr = url.split('='); //convert url string in array	
+					var id= url_arr[1]; //fetch the value of id from url
 					
 			// organisation app icon image
 			/* var User = StackMob.Model.extend({ schemaName: 'organisation' });
@@ -362,9 +368,13 @@ padding-top:0px;
 			var id= url_arr[1]; //fetch the value of id from url
 			//alert(id);
 			
-			$('#like_wrapper').html('<div class="fb-like" data-href="http://dev.my_first_app.divyanshimixorgcom.stackmobapp.com/naitra/dashboard/view.html?id='+id+'" data-send="false" data-width="450" data-font="arial" data-show-faces="false" style="overflow:hidden; height:25px; width:400px"></div>');
+			$('#like_wrapper').html('<div class="fb-like" data-href="'+url+'" data-send="false" data-width="450" data-font="arial" data-show-faces="false" style="overflow:hidden; height:25px; width:400px"></div>');
 	
-			$('#comment_wrapper').html('<div class="fb-comments" data-href="http://dev.my_first_app.divyanshimixorgcom.stackmobapp.com/naitra/dashboard/view.html?id='+id+'" data-width="470" data-num-posts="10"></div>');
+			$('#comment_wrapper').html('<div class="fb-comments" data-href="'+url+'" data-width="470" data-num-posts="10"></div>');
+			
+			/* $('#like_wrapper').html('<div class="fb-like" data-href="http://dev.my_first_app.divyanshimixorgcom.stackmobapp.com/naitra/dashboard/view.html?id='+id+'" data-send="false" data-width="450" data-font="arial" data-show-faces="false" style="overflow:hidden; height:25px; width:400px"></div>');
+	
+			$('#comment_wrapper').html('<div class="fb-comments" data-href="http://dev.my_first_app.divyanshimixorgcom.stackmobapp.com/naitra/dashboard/view.html?id='+id+'" data-width="470" data-num-posts="10"></div>'); */
 			
 	});
 </script>
