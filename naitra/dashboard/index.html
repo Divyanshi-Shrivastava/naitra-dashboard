@@ -299,7 +299,9 @@ $( "#dialog-confirm" ).dialog({
 					}
 					
 					//if((org_icon != '') || (org_icon != null)) {
-						var info = "<img src='"+org_icon+"' style='width:50px; height:60px;' alt='"+image_id+"' /> <b>Time  :</b> " +new Date(lastmod_date/1000) + "<br/><b>Failure Message  :</b> " +failure_message + "<br/> <b>video_play_status  :</b> " +video_play_status + "<br/> <b>Image-id  :</b> " +image_id + "<br/> <b>Mobile_no : </b>"+mobile_no + "<br/> <b>Address :</b> "+address + "<br/><b>Device-id  :</b> " +device_id+ "<br/><b>Device model  : </b>" +model+"<br/> <b>Feedback :</b> "+feedback;
+						//var info = "<img src='"+org_icon+"' style='width:50px; height:60px;' alt='"+image_id+"' /> <b>Time  :</b> " +new Date(lastmod_date/1000) + "<br/><b>Failure Message  :</b> " +failure_message + "<br/> <b>video_play_status  :</b> " +video_play_status + "<br/> <b>Image-id  :</b> " +image_id + "<br/> <b>Mobile_no : </b>"+mobile_no + "<br/> <b>Address :</b> "+address + "<br/><b>Device-id  :</b> " +device_id+ "<br/><b>Device model  : </b>" +model+"<br/> <b>Feedback :</b> "+feedback;
+						
+						var info = "<img src='"+org_icon+"' style='width:50px; height:60px;' alt='"+image_id+"' /> <br/><b>Failure Message  :</b> " +failure_message + "<br/> <b>video_play_status  :</b> " +video_play_status + "<br/> <b>Image-id  :</b> " +image_id + "<br/> <b>Mobile_no : </b>"+mobile_no + "<br/> <b>Address :</b> "+address + "<br/><b>Device-id  :</b> " +device_id+ "<br/><b>Device model  : </b>" +model+"<br/> <b>Feedback :</b> "+feedback;
 					//}
 					/* if((org_icon == '') || (org_icon == null)) {
 						var info = "Image-id  : " +image_id + "<br/> Mobile_no : "+mobile_no + "<br/> Address : "+address + "<br/> Feedback : "+feedback+"<br/>Device model  : " +model;
